@@ -64,8 +64,8 @@ def get_possible_keylen(message):
     for i in sorted(dic_fac.items(), key=lambda x:(-x[1],x[0])):
         # print(i)
         list_fac.append(i[0])
-    
-    return(list_fac)
+    return list_fac
+
 
 def get_nth_subkeys_letters(n, key_length, message):
     # 预处理字符串    
@@ -164,19 +164,6 @@ def is_english(message, word_percentage=20, letter_percentage=85):
     else:
         return(False)
 
-def test():
-    ciphertext = 'Ppqca xqvekg ybnkmazu ybngbal jon i tszm jyim. Vrag voht vrau c tksg. Ddwuo xitlazu vavv raz c vkb qp iwpou.'
-    
-    # print(find_repeat_sequences_spacings(ciphertext))
-    # print(get_useful_factors(24))
-
-    # print(get_possible_keylen(ciphertext))
-
-    # for i in range(1, 5):
-    #     print(get_nth_subkeys_letters(i, 4, ciphertext))
-    
-    # message = 'I rc ascwuiluhnviwuetnh,osgaa ice tipeeeee slnatsfietgi tittynecenisl. e fo f fnc isltn sn o a yrs sd onisli ,l erglei trhfmwfrogotn,l stcofiit.aea wesn,lnc ee w,l eIh eeehoer ros iol er snh nl oahsts ilasvih tvfeh rtira id thatnie.im ei-dlmf i thszonsisehroe, aiehcdsanahiec gv gyedsB affcahiecesd d lee onsdihsoc nin cethiTitx eRneahgin r e teom fbiotd n ntacscwevhtdhnhpiwru'
-    # print(freq_match_score(message))
 
 def kasiski(message):
     flag = False
