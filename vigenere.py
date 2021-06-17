@@ -2,6 +2,12 @@ from itertools import cycle
 
 
 def encrypt(message, key):
+    """
+    维吉尼亚密码(Vigenere Cipher)加密
+    :param message: 明文
+    :param key: 密钥
+    :return: 加密后密文
+    """
     tmp_text = ''
     tmp_key = key.upper()
     alpha_pool = cycle(tmp_key)
@@ -18,6 +24,12 @@ def encrypt(message, key):
 
 
 def decrypt(message, key):
+    """
+    维吉尼亚密码(Vigenere Cipher)解密
+    :param message: 密文
+    :param key: 密钥
+    :return: 解密后明文
+    """
     tmp_text = ''
     tmp_key = key.upper()
     alpha_pool = cycle(tmp_key)
