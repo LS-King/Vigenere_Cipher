@@ -237,6 +237,7 @@ def main():
     with open('ciphertext_vigenere.txt', 'r') as f:
         for i in f.readlines():
             message += i
+    print("The encrypted text is:")
     print(message)
     kasiski(message)
 
