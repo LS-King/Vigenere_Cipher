@@ -200,7 +200,7 @@ def kasiski(message):
             print("Position:", i)
             for k in sorted(dic_score.items(), key=lambda x: -x[1])[:top_guess]:
                 dic_key[i] += k[0]
-                print("Test letter:", "Freq_score:", k, end=" ")
+                print("Test letter:", k[0], "Freq_score:", k[1], end=" ")
             print()
 
         print("Trying keys...")
@@ -211,13 +211,13 @@ def kasiski(message):
                     tmp_key += dic_key[j][0]
             else:
                 tmp = i
-                dkey = -1
+                line = -1
                 while tmp > 0:
-                    dkey += 1
-                    dvalue = tmp % top_guess
-                    tmp_key += dic_key[dkey][dvalue]
+                    line += 1
+                    column = tmp % top_guess
+                    tmp_key += dic_key[line][column]
                     tmp //= top_guess
-                for j in range(dkey + 1, key_len):
+                for j in range(line + 1, key_len):
                     tmp_key += dic_key[j][0]
 
             decrypted_text = decrypt(message, tmp_key)
