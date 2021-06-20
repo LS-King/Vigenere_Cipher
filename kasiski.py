@@ -1,4 +1,5 @@
 import math
+from itertools import product
 from vigenere import decrypt
 
 
@@ -46,7 +47,7 @@ def find_repeat_sequences_spacings(message):
 
 def get_useful_factors(num):
     """
-    通过因数找到最可能的密钥字符串长度
+    分解因数
     :param num: 待分解数字
     :return: 因数列表
     """
@@ -116,23 +117,12 @@ def freq_match_score(message):
     for c in tmp_text:
         dic_letter_freq[c] += 1
 
-    dic_freq_letter = dict()
-    for i in dic_letter_freq.items():
-        if i[1] not in dic_freq_letter.keys():
-            dic_freq_letter[i[1]] = [i[0]]
-        else:
-            dic_freq_letter[i[1]].append(i[0])
-
-    freq_string = ''
-    for f in sorted(dic_freq_letter.items(), key=lambda x: -x[0]):
-        for c in f[1]:
-            freq_string += c
-
-    for c in freq_string[:6]:
-        if c in ETAOIN[:6]:
+    list_freq_letter = sorted(dic_letter_freq.items(), key=lambda x: -x[1])
+    for c in list_freq_letter[:6]:
+        if c[0] in ETAOIN[:6]:
             match_score += 1
-    for c in freq_string[-6:]:
-        if c in ETAOIN[-6:]:
+    for c in list_freq_letter[-6:]:
+        if c[0] in ETAOIN[-6:]:
             match_score += 1
 
     return match_score
@@ -186,7 +176,7 @@ def kasiski(message):
     flag = False
     for key_len in get_possible_key_len(message)[:5]:
         print('Testing key_len:', key_len)
-        dic_key = dict()
+        dic_key = []
         top_guess = 3
         for i in range(0, key_len):
             base_string = get_nth_subkeys_letters(i + 1, key_len, message)
@@ -196,33 +186,19 @@ def kasiski(message):
                 for ch in base_string:
                     tmp_string += chr(ord('A') + (ord(ch) - ord('A') - j) % 26)
                 dic_score[chr(ord('A')+j)] = freq_match_score(tmp_string)
-            dic_key[i] = ''
+            dic_key.append('')
             print("Position:", i)
             for k in sorted(dic_score.items(), key=lambda x: -x[1])[:top_guess]:
                 dic_key[i] += k[0]
-                print("Test letter:", k[0], "Freq_score:", k[1], end=" ")
+                print("Testing letter", k[0], "Freq_score =", k[1], end=" ")
             print()
 
         print("Trying keys...")
-        for i in range(0, top_guess ** key_len):
-            tmp_key = ''
-            if i == 0:
-                for j in range(0, key_len):
-                    tmp_key += dic_key[j][0]
-            else:
-                tmp = i
-                line = -1
-                while tmp > 0:
-                    line += 1
-                    column = tmp % top_guess
-                    tmp_key += dic_key[line][column]
-                    tmp //= top_guess
-                for j in range(line + 1, key_len):
-                    tmp_key += dic_key[j][0]
-
+        for it in product(*dic_key):
+            tmp_key = "".join(it)
             decrypted_text = decrypt(message, tmp_key)
             if is_english(decrypted_text):
-                print('Found key:', tmp_key)
+                print("Found key:", tmp_key)
                 print("The decrypted text is:")
                 print(decrypted_text)
                 flag = True
